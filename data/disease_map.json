@@ -1,0 +1,124 @@
+{
+  "fever": [
+    "Paracetamol 500mg",
+    "Paracetamol 650mg",
+    "Ibuprofen 400mg"
+  ],
+  "headache": [
+    "Paracetamol 500mg",
+    "Ibuprofen 400mg",
+    "Aspirin 75mg",
+    "Diclofenac 50mg"
+  ],
+  "pain": [
+    "Ibuprofen 400mg",
+    "Diclofenac 50mg",
+    "Aceclofenac 100mg",
+    "Paracetamol 500mg"
+  ],
+  "cold": [
+    "Cetirizine 10mg",
+    "Fexofenadine 120mg",
+    "Dextromethorphan + Guaifenesin + Phenylephrine"
+  ],
+  "cough": [
+    "Dextromethorphan + Guaifenesin + Phenylephrine",
+    "Promethazine 25mg"
+  ],
+  "allergy": [
+    "Cetirizine 10mg",
+    "Fexofenadine 120mg",
+    "Hydroxyzine 25mg"
+  ],
+  "acidity": [
+    "Omeprazole 20mg",
+    "Pantoprazole 40mg",
+    "Esomeprazole 40mg",
+    "Ranitidine 150mg"
+  ],
+  "gastritis": [
+    "Omeprazole 20mg",
+    "Pantoprazole 40mg",
+    "Ranitidine 150mg"
+  ],
+  "ulcer": [
+    "Pantoprazole 40mg",
+    "Esomeprazole 40mg",
+    "Omeprazole 20mg"
+  ],
+  "infection": [
+    "Amoxicillin 500mg",
+    "Azithromycin 500mg",
+    "Ciprofloxacin 500mg",
+    "Cefixime 200mg"
+  ],
+  "bacterial infection": [
+    "Amoxicillin 500mg",
+    "Ciprofloxacin 500mg",
+    "Cefixime 200mg",
+    "Azithromycin 500mg"
+  ],
+  "throat infection": [
+    "Amoxicillin 500mg",
+    "Azithromycin 500mg",
+    "Cefixime 200mg"
+  ],
+  "urinary infection": [
+    "Ciprofloxacin 500mg",
+    "Cefixime 200mg"
+  ],
+  "hypertension": [
+    "Telmisartan 40mg",
+    "Olmesartan 20mg",
+    "Amlodipine 5mg",
+    "Metoprolol 50mg"
+  ],
+  "high blood pressure": [
+    "Telmisartan 40mg",
+    "Amlodipine 5mg",
+    "Metoprolol 50mg"
+  ],
+  "diabetes": [
+    "Metformin 500mg",
+    "Glimepiride 1mg",
+    "Sitagliptin 100mg"
+  ],
+  "type 2 diabetes": [
+    "Metformin 500mg",
+    "Glimepiride 1mg",
+    "Sitagliptin 100mg"
+  ],
+  "cholesterol": [
+    "Atorvastatin 10mg",
+    "Atorvastatin 20mg",
+    "Rosuvastatin 10mg"
+  ],
+  "high cholesterol": [
+    "Atorvastatin 10mg",
+    "Rosuvastatin 10mg"
+  ],
+  "thyroid": [
+    "Levothyroxine 50mcg"
+  ],
+  "hypothyroidism": [
+    "Levothyroxine 50mcg"
+  ],
+  "vitamin deficiency": [
+    "Vitamin C 500mg",
+    "Calcium 500mg + Vitamin D3 250IU",
+    "Vitamin D3 60000IU"
+  ],
+  "calcium deficiency": [
+    "Calcium 500mg + Vitamin D3 250IU"
+  ],
+  "joint pain": [
+    "Diclofenac 50mg",
+    "Aceclofenac 100mg",
+    "Ibuprofen 400mg"
+  ],
+  "arthritis": [
+    "Diclofenac 50mg",
+    "Aceclofenac 100mg",
+    "Ibuprofen 400mg"
+  ]
+}

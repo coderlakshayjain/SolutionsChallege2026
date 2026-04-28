@@ -1,0 +1,69 @@
+brand,salt,manufacturer,type,price
+Crocin,Paracetamol 500mg,GSK,Tablet,30
+Calpol,Paracetamol 500mg,GSK,Tablet,28
+Dolo 650,Paracetamol 650mg,Micro Labs,Tablet,32
+Tylenol,Paracetamol 500mg,J&J,Tablet,45
+Combiflam,Ibuprofen 400mg + Paracetamol 325mg,Sanofi,Tablet,36
+Brufen,Ibuprofen 400mg,Abbott,Tablet,22
+Ibugesic,Ibuprofen 400mg,Cipla,Tablet,18
+Nurofen,Ibuprofen 200mg,Reckitt,Tablet,55
+Aspirin,Aspirin 75mg,Bayer,Tablet,10
+Ecosprin,Aspirin 75mg,USV,Tablet,12
+Voveran,Diclofenac 50mg,Novartis,Tablet,28
+Voltaren,Diclofenac 50mg,GSK,Tablet,40
+Hifenac,Aceclofenac 100mg,Intas,Tablet,55
+Zerodol,Aceclofenac 100mg,Ipca,Tablet,50
+Augmentin,Amoxicillin 500mg + Clavulanate 125mg,GSK,Tablet,180
+Mox,Amoxicillin 500mg,Ranbaxy,Capsule,45
+Novamox,Amoxicillin 500mg,Cipla,Capsule,42
+Azithral,Azithromycin 500mg,Alembic,Tablet,95
+Zithromax,Azithromycin 500mg,Pfizer,Tablet,140
+Azee,Azithromycin 500mg,Cipla,Tablet,90
+Ciprobid,Ciprofloxacin 500mg,Cadila,Tablet,65
+Ciplox,Ciprofloxacin 500mg,Cipla,Tablet,60
+Cifran,Ciprofloxacin 500mg,Ranbaxy,Tablet,58
+Taxim-O,Cefixime 200mg,Alkem,Tablet,120
+Cefix,Cefixime 200mg,Cipla,Tablet,100
+Zifi,Cefixime 200mg,FDC,Tablet,110
+Omez,Omeprazole 20mg,Dr. Reddy's,Capsule,55
+Prilosec,Omeprazole 20mg,AstraZeneca,Capsule,90
+Pan,Pantoprazole 40mg,Alkem,Tablet,48
+Pantop,Pantoprazole 40mg,Aristo,Tablet,42
+Nexpro,Esomeprazole 40mg,Torrent,Tablet,65
+Nexium,Esomeprazole 40mg,AstraZeneca,Tablet,120
+Rantac,Ranitidine 150mg,JB Chemicals,Tablet,18
+Zinetac,Ranitidine 150mg,GSK,Tablet,22
+Telma,Telmisartan 40mg,Glenmark,Tablet,85
+Telsartan,Telmisartan 40mg,Dr. Reddy's,Tablet,75
+Olsar,Olmesartan 20mg,Sun Pharma,Tablet,110
+Olmy,Olmesartan 20mg,Cipla,Tablet,95
+Amlodac,Amlodipine 5mg,Cadila,Tablet,38
+Amlovas,Amlodipine 5mg,Macleods,Tablet,32
+Norvasc,Amlodipine 5mg,Pfizer,Tablet,120
+Metolar,Metoprolol 50mg,Cipla,Tablet,45
+Betaloc,Metoprolol 50mg,AstraZeneca,Tablet,65
+Glycomet,Metformin 500mg,USV,Tablet,28
+Glucophage,Metformin 500mg,Merck,Tablet,55
+Zoryl,Glimepiride 1mg,Intas,Tablet,35
+Amaryl,Glimepiride 1mg,Sanofi,Tablet,65
+Januvia,Sitagliptin 100mg,MSD,Tablet,480
+Istavel,Sitagliptin 100mg,Sun Pharma,Tablet,280
+Limcee,Vitamin C 500mg,Abbott,Tablet,12
+Celin,Vitamin C 500mg,GSK,Tablet,14
+Shelcal,Calcium 500mg + Vitamin D3 250IU,Torrent,Tablet,85
+Calcirol,Vitamin D3 60000IU,Cadila,Capsule,28
+Allegra,Fexofenadine 120mg,Sanofi,Tablet,120
+Fexova,Fexofenadine 120mg,Cipla,Tablet,85
+Cetrizine,Cetirizine 10mg,Various,Tablet,8
+Zyrtec,Cetirizine 10mg,UCB,Tablet,45
+Atarax,Hydroxyzine 25mg,UCB,Tablet,38
+Benadryl,Diphenhydramine 25mg,J&J,Syrup,85
+Phenergan,Promethazine 25mg,Sanofi,Tablet,22
+Alex,Dextromethorphan + Guaifenesin + Phenylephrine,Glenmark,Syrup,75
+Atorva,Atorvastatin 10mg,Zydus,Tablet,38
+Lipitor,Atorvastatin 10mg,Pfizer,Tablet,145
+Storvas,Atorvastatin 20mg,Sun Pharma,Tablet,55
+Rosuvas,Rosuvastatin 10mg,Sun Pharma,Tablet,85
+Crestor,Rosuvastatin 10mg,AstraZeneca,Tablet,220
+Eltroxin,Levothyroxine 50mcg,GSK,Tablet,28
+Thyronorm,Levothyroxine 50mcg,Abbott,Tablet,32

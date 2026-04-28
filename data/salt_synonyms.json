@@ -1,0 +1,89 @@
+{
+  "Paracetamol": [
+    "Acetaminophen",
+    "PCM",
+    "Para",
+    "APAP"
+  ],
+  "Ibuprofen": [
+    "Advil",
+    "Motrin",
+    "IBU"
+  ],
+  "Aspirin": [
+    "Acetylsalicylic acid",
+    "ASA"
+  ],
+  "Diclofenac": [
+    "Voltarol"
+  ],
+  "Aceclofenac": [
+    "ACL"
+  ],
+  "Amoxicillin": [
+    "Amox",
+    "AMOX"
+  ],
+  "Azithromycin": [
+    "AZT",
+    "Azithro"
+  ],
+  "Ciprofloxacin": [
+    "Cipro",
+    "CIP"
+  ],
+  "Cefixime": [
+    "Cef"
+  ],
+  "Omeprazole": [
+    "PPI",
+    "OMP"
+  ],
+  "Pantoprazole": [
+    "PAN",
+    "PPZ"
+  ],
+  "Esomeprazole": [
+    "ESO"
+  ],
+  "Ranitidine": [
+    "RAN",
+    "H2 blocker"
+  ],
+  "Metformin": [
+    "MET",
+    "Glucophage generic"
+  ],
+  "Atorvastatin": [
+    "ATV",
+    "Statin"
+  ],
+  "Rosuvastatin": [
+    "RSV",
+    "Statin"
+  ],
+  "Telmisartan": [
+    "TEL",
+    "ARB"
+  ],
+  "Amlodipine": [
+    "AML",
+    "CCB"
+  ],
+  "Metoprolol": [
+    "MET",
+    "Beta blocker"
+  ],
+  "Levothyroxine": [
+    "LT4",
+    "T4",
+    "L-thyroxine"
+  ],
+  "Cetirizine": [
+    "CTZ",
+    "Antihistamine"
+  ],
+  "Fexofenadine": [
+    "FEX"
+  ]
+}
