@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Medicine Salt AI</title>
+<style>
+  :root {
+    --bg: #f5f6fa; --card: #fff; --border: #e2e5ee;
+    --primary: #5c6ef0; --primary-dark: #4356d4;
+    --text: #1a1d2e; --muted: #6b7280;
+    --success: #10b981; --warn: #f59e0b; --danger: #ef4444;
+    --radius: 12px; --shadow: 0 2px 16px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  .header { background: #fff; border-bottom: 1px solid var(--border);
+    padding: 0 24px; display: flex; align-items: center; gap: 12px; height: 60px;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+  .logo { width: 36px; height: 36px; background: var(--primary); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
+  .header h1 { font-size: 18px; font-weight: 600; color: var(--text); }
+  .header span { font-size: 12px; background: #eef0ff; color: var(--primary);
+    padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+
+  /* Layout */
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; background: #fff; border-radius: var(--radius);
+    padding: 4px; box-shadow: var(--shadow); margin-bottom: 24px; overflow-x: auto; }
+  .tab { flex: 1; min-width: 100px; padding: 10px 16px; border: none; background: none;
+    border-radius: 9px; cursor: pointer; font-size: 14px; font-weight: 500;
+    color: var(--muted); transition: all .2s; white-space: nowrap; }
+  .tab.active { background: var(--primary); color: #fff; }
+  .tab:hover:not(.active) { background: #f0f1ff; color: var(--primary); }
+  .tab-icon { margin-right: 6px; }
+
+  /* Cards */
+  .card { background: var(--card); border-radius: var(--radius); padding: 24px;
+    box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 20px; }
+  .card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
+
+  /* Form elements */
+  .input-group { margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--muted);
+    margin-bottom: 6px; }
+  input[type="text"] { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+    border-radius: 9px; font-size: 15px; color: var(--text); outline: none;
+    transition: border .2s; background: #fafbff; }
+  input[type="text"]:focus { border-color: var(--primary); background: #fff; }
+
+  /* Buttons */
+  .btn { padding: 11px 22px; border: none; border-radius: 9px; cursor: pointer;
+    font-size: 14px; font-weight: 600; transition: all .15s; display: inline-flex;
+    align-items: center; gap: 7px; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-secondary { background: #eef0ff; color: var(--primary); }
+  .btn-secondary:hover { background: #e0e3ff; }
+  .btn-danger { background: #fff0f0; color: var(--danger); }
+  .btn-danger.recording { background: var(--danger); color: #fff; animation: pulse 1s infinite; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
+
+  /* Results */
+  .result-box { margin-top: 20px; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .medicine-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 16px;
+    margin-bottom: 12px; }
+  .medicine-card.highlight { border-color: var(--primary); background: #f8f9ff; }
+  .medicine-name { font-size: 18px; font-weight: 700; color: var(--text); }
+  .salt-badge { display: inline-block; background: #eef0ff; color: var(--primary);
+    font-size: 12px; padding: 3px 10px; border-radius: 20px; margin: 6px 0; }
+  .meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .price { font-size: 15px; font-weight: 600; color: var(--success); }
+
+  /* Verdict badge */
+  .verdict { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+    border-radius: 8px; font-weight: 600; font-size: 14px; margin: 12px 0; }
+  .verdict.identical { background: #d1fae5; color: #065f46; }
+  .verdict.partial { background: #fef3c7; color: #92400e; }
+  .verdict.similar { background: #fef3c7; color: #92400e; }
+  .verdict.different { background: #fee2e2; color: #991b1b; }
+
+  /* Alternatives list */
+  .alt-list { display: grid; gap: 8px; margin-top: 12px; }
+  .alt-item { display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+    font-size: 14px; background: #fafbff; }
+  .alt-item:hover { border-color: var(--primary); background: #f8f9ff; }
+  .alt-brand { font-weight: 600; }
+  .alt-mfr { color: var(--muted); font-size: 12px; }
+
+  /* Warning */
+  .warning-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; color: #92400e; margin-top: 14px;
+    display: flex; gap: 8px; align-items: flex-start; }
+
+  /* OCR */
+  .drop-zone { border: 2px dashed var(--border); border-radius: var(--radius);
+    padding: 40px 20px; text-align: center; cursor: pointer; transition: all .2s;
+    background: #fafbff; }
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--primary); background: #f0f1ff; }
+  .drop-zone p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+  .preview-img { max-width: 100%; max-height: 200px; border-radius: 8px;
+    margin-top: 12px; object-fit: contain; }
+
+  /* Voice */
+  .transcript-box { background: #f8f9ff; border: 1px solid var(--border); border-radius: 9px;
+    padding: 12px 16px; font-size: 14px; color: var(--text); min-height: 48px;
+    margin: 12px 0; font-style: italic; color: var(--muted); }
+  .transcript-box.has-text { font-style: normal; color: var(--text); }
+
+  /* Disease results */
+  .disease-salt-group { margin-bottom: 20px; }
+  .disease-salt-title { font-size: 14px; font-weight: 600; color: var(--primary);
+    margin-bottom: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+
+  /* Tier badge */
+  .tier-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+  .tier-1 { background: #d1fae5; color: #065f46; }
+  .tier-2 { background: #fef3c7; color: #92400e; }
+  .tier-3 { background: #fee2e2; color: #991b1b; }
+
+  /* Loading */
+  .loading { display: flex; align-items: center; gap: 10px; color: var(--muted);
+    font-size: 14px; padding: 20px 0; }
+  .spinner { width: 18px; height: 18px; border: 2px solid var(--border);
+    border-top-color: var(--primary); border-radius: 50%; animation: spin .6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .section-hidden { display: none; }
+  .confidence { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">💊</div>
+  <h1>Medicine Salt AI</h1>
+  <span>Prototype v1.0</span>
+</div>
+
+<div class="container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('lookup')">
+      <span class="tab-icon">🔍</span>Lookup
+    </button>
+    <button class="tab" onclick="switchTab('compare')">
+      <span class="tab-icon">⚖️</span>Compare
+    </button>
+    <button class="tab" onclick="switchTab('disease')">
+      <span class="tab-icon">🩺</span>By Disease
+    </button>
+    <button class="tab" onclick="switchTab('ocr')">
+      <span class="tab-icon">📷</span>Scan Strip
+    </button>
+    <button class="tab" onclick="switchTab('voice')">
+      <span class="tab-icon">🎙️</span>Voice
+    </button>
+  </div>
+
+  <!-- LOOKUP TAB -->
+  <div id="tab-lookup">
+    <div class="card">
+      <div class="card-title">Medicine Lookup</div>
+      <div class="input-group">
+        <label>Enter brand name</label>
+        <input type="text" id="lookup-input" placeholder="e.g. Crocin, Augmentin, Telma..."
+          onkeydown="if(event.key==='Enter') doLookup()"/>
+      </div>
+      <button class="btn btn-primary" onclick="doLookup()">🔍 Search</button>
+    </div>
+    <div id="lookup-result"></div>
+  </div>
+
+  <!-- COMPARE TAB -->
+  <div id="tab-compare" class="section-hidden">
+    <div class="card">
+      <div class="card-title">Compare Two Medicines</div>
+      <div class="input-group">
+        <label>First medicine</label>
+        <input type="text" id="compare-input1" placeholder="e.g. Crocin"
+          onkeydown="if(event.key==='Enter') doCompare()"/>
+      </div>
+      <div class="input-group">
+        <label>Second medicine</label>
+        <input type="text" id="compare-input2" placeholder="e.g. Dolo 650"
+          onkeydown="if(event.key==='Enter') doCompare()"/>
+      </div>
+      <button class="btn btn-primary" onclick="doCompare()">⚖️ Compare</button>
+    </div>
+    <div id="compare-result"></div>
+  </div>
+
+  <!-- DISEASE TAB -->
+  <div id="tab-disease" class="section-hidden">
+    <div class="card">
+      <div class="card-title">Find Medicines by Disease</div>
+      <div class="input-group">
+        <label>Disease or symptom</label>
+        <input type="text" id="disease-input" placeholder="e.g. fever, diabetes, hypertension..."
+          onkeydown="if(event.key==='Enter') doDisease()"/>
+      </div>
+      <button class="btn btn-primary" onclick="doDisease()">🩺 Find Medicines</button>
+    </div>
+    <div id="disease-result"></div>
+  </div>
+
+  <!-- OCR TAB -->
+  <div id="tab-ocr" class="section-hidden">
+    <div class="card">
+      <div class="card-title">Scan Medicine Strip</div>
+      <div class="drop-zone" id="drop-zone"
+        onclick="document.getElementById('ocr-file').click()"
+        ondragover="event.preventDefault();this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="handleDrop(event)">
+        <div style="font-size:40px">📷</div>
+        <p>Click or drag an image of your medicine strip / packet</p>
+        <p style="font-size:12px;margin-top:4px">Supports JPG, PNG, WEBP</p>
+      </div>
+      <input type="file" id="ocr-file" accept="image/*" style="display:none"
+        onchange="handleFileSelect(event)"/>
+      <img id="ocr-preview" class="preview-img" style="display:none"/>
+      <div style="margin-top:14px">
+        <button class="btn btn-primary" id="ocr-btn" onclick="doOCR()" disabled>📷 Extract & Lookup</button>
+      </div>
+    </div>
+    <div id="ocr-result"></div>
+  </div>
+
+  <!-- VOICE TAB -->
+  <div id="tab-voice" class="section-hidden">
+    <div class="card">
+      <div class="card-title">Voice Query</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px">
+        Try saying: <em>"What is Augmentin"</em> · <em>"Compare Crocin and Dolo"</em> · <em>"Medicines for fever"</em>
+      </p>
+      <div class="transcript-box" id="transcript-box">Press the button and speak...</div>
+      <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn btn-danger" id="voice-btn" onclick="toggleVoice()">🎙️ Start Recording</button>
+        <button class="btn btn-secondary" onclick="doVoice()" id="voice-submit" disabled>Send Query</button>
+        <button class="btn btn-secondary" onclick="clearVoice()">Clear</button>
+      </div>
+    </div>
+    <div id="voice-result"></div>
+  </div>
+
+</div>
+
+<script>
+const API = '';  // same origin
+
+// ── Tab switching ──────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const names = ['lookup','compare','disease','ocr','voice'];
+    t.classList.toggle('active', names[i] === name);
+  });
+  ['lookup','compare','disease','ocr','voice'].forEach(n => {
+    document.getElementById('tab-'+n).classList.toggle('section-hidden', n !== name);
+  });
+}
+
+// ── API helpers ────────────────────────────────────────────────
+async function post(endpoint, body) {
+  const res = await fetch(API + '/api/' + endpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'API error');
+  return data;
+}
+
+function loading(id) {
+  document.getElementById(id).innerHTML = `
+    <div class="loading"><div class="spinner"></div> Searching database...</div>`;
+}
+
+function showError(id, msg) {
+  document.getElementById(id).innerHTML = `
+    <div class="card" style="border-color:var(--danger);background:#fff5f5">
+      <strong style="color:var(--danger)">Not found</strong>
+      <p style="font-size:14px;margin-top:6px;color:var(--muted)">${msg}</p>
+    </div>`;
+}
+
+// ── Render helpers ─────────────────────────────────────────────
+function tierBadge(t) {
+  const labels = {1:'Exact match', 2:'Fuzzy match', 3:'Synonym match'};
+  return `<span class="tier-badge tier-${t}">${labels[t]||''}</span>`;
+}
+
+function priceTag(p) {
+  return `<span class="price">₹${p}</span>`;
+}
+
+function renderMedicine(m, highlight=false) {
+  return `
+    <div class="medicine-card ${highlight?'highlight':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="medicine-name">${m.matched_brand || m.brand}</div>
+          <span class="salt-badge">${m.salt}</span>
+          <div class="meta">${m.manufacturer} · ${m.type}</div>
+        </div>
+        <div style="text-align:right">
+          ${priceTag(m.price)}
+          ${m.match_tier ? tierBadge(m.match_tier) : ''}
+          ${m.confidence ? `<div class="confidence">${Math.round(m.confidence*100)}% confidence</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAlternatives(alts) {
+  if (!alts || alts.length === 0) return '<p style="color:var(--muted);font-size:13px">No alternatives found in database.</p>';
+  return alts.map(a => `
+    <div class="alt-item">
+      <div>
+        <div class="alt-brand">${a.brand}</div>
+        <div class="alt-mfr">${a.manufacturer} · ${a.type}</div>
+      </div>
+      ${priceTag(a.price)}
+    </div>`).join('');
+}
+
+function warningBox(msg) {
+  return `<div class="warning-box">⚠️ <span>${msg}</span></div>`;
+}
+
+// ── LOOKUP ─────────────────────────────────────────────────────
+async function doLookup(medicine) {
+  const val = medicine || document.getElementById('lookup-input').value.trim();
+  if (!val) return;
+  loading('lookup-result');
+  try {
+    const d = await post('lookup', {medicine: val});
+    const alts = d.alternatives || [];
+    document.getElementById('lookup-result').innerHTML = `
+      <div class="result-box">
+        <div class="card">
+          <div class="card-title">Result</div>
+          ${renderMedicine(d, true)}
+          <div style="margin-top:20px">
+            <div class="card-title" style="font-size:14px">
+              ${alts.length} Equivalent Alternative${alts.length!==1?'s':''} (same salt)
+            </div>
+            <div class="alt-list">${renderAlternatives(alts)}</div>
+          </div>
+          ${warningBox('Always consult a pharmacist before switching brands.')}
+        </div>
+      </div>`;
+  } catch(e) {
+    showError('lookup-result', e.message);
+  }
+}
+
+// ── COMPARE ────────────────────────────────────────────────────
+async function doCompare() {
+  const m1 = document.getElementById('compare-input1').value.trim();
+  const m2 = document.getElementById('compare-input2').value.trim();
+  if (!m1 || !m2) return;
+  loading('compare-result');
+  try {
+    const d = await post('compare', {medicine1:m1, medicine2:m2});
+    const verdictEmoji = {identical:'✅', partial:'⚠️', similar:'🔶', different:'❌'};
+    document.getElementById('compare-result').innerHTML = `
+      <div class="result-box">
+        <div class="card">
+          <div class="card-title">Comparison Result</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            ${renderMedicine(d.med1)}
+            ${renderMedicine(d.med2)}
+          </div>
+          <div class="verdict ${d.verdict}">
+            ${verdictEmoji[d.verdict]||'🔍'} ${d.verdict_text}
+          </div>
+          <div style="font-size:14px;margin-top:8px">
+            <strong>Price difference:</strong>
+            ${d.price_diff >= 0 ? `${d.med2.matched_brand} costs ₹${Math.abs(d.price_diff)} more` :
+              `${d.med1.matched_brand} costs ₹${Math.abs(d.price_diff)} more`}
+            · Cheaper option: <strong>${d.cheaper}</strong>
+          </div>
+          ${d.safe_to_substitute
+            ? '<div style="color:var(--success);font-size:13px;margin-top:8px">✅ Safe to substitute (same salt)</div>'
+            : '<div style="color:var(--warn);font-size:13px;margin-top:8px">⚠️ Consult pharmacist before substituting</div>'}
+          ${warningBox(d.warning)}
+        </div>
+      </div>`;
+  } catch(e) {
+    showError('compare-result', e.message);
+  }
+}
+
+// ── DISEASE ────────────────────────────────────────────────────
+async function doDisease() {
+  const val = document.getElementById('disease-input').value.trim();
+  if (!val) return;
+  loading('disease-result');
+  try {
+    const d = await post('disease', {disease: val});
+    const groups = d.medicines_by_salt.map(g => `
+      <div class="disease-salt-group">
+        <div class="disease-salt-title">💊 ${g.salt}</div>
+        <div class="alt-list">
+          ${g.medicines.slice(0,4).map(m => `
+            <div class="alt-item" style="cursor:pointer"
+              onclick="switchTab('lookup');document.getElementById('lookup-input').value='${m.brand}';doLookup('${m.brand}')">
+              <div>
+                <div class="alt-brand">${m.brand}</div>
+                <div class="alt-mfr">${m.manufacturer} · ${m.type}</div>
+              </div>
+              ${priceTag(m.price)}
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+
+    document.getElementById('disease-result').innerHTML = `
+      <div class="result-box">
+        <div class="card">
+          <div class="card-title">Medicines for: ${d.disease}</div>
+          ${groups}
+          ${warningBox(d.warning)}
+        </div>
+      </div>`;
+  } catch(e) {
+    showError('disease-result', e.message);
+  }
+}
+
+// ── OCR ────────────────────────────────────────────────────────
+let ocrImageData = null;
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  loadImageFile(file);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) loadImageFile(file);
+}
+
+function loadImageFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    ocrImageData = ev.target.result;
+    const img = document.getElementById('ocr-preview');
+    img.src = ocrImageData;
+    img.style.display = 'block';
+    document.getElementById('ocr-btn').disabled = false;
+    document.getElementById('drop-zone').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function doOCR() {
+  if (!ocrImageData) return;
+  loading('ocr-result');
+  try {
+    const d = await post('ocr', {image: ocrImageData});
+    const candidatesHTML = d.candidates.map((c,i) =>
+      `<div class="alt-item">
+        <span>${i===0?'<strong>':''}${c.text}${i===0?'</strong>':''}</span>
+        <span class="tier-badge tier-${c.confidence==='high'?1:2}">${c.confidence}</span>
+      </div>`).join('');
+
+    document.getElementById('ocr-result').innerHTML = `
+      <div class="result-box">
+        <div class="card">
+          <div class="card-title">OCR Results</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px">
+            Raw text extracted from image
+          </div>
+          <div class="transcript-box has-text" style="font-family:monospace;font-size:12px;white-space:pre-wrap">
+            ${d.raw_text || 'No text detected'}
+          </div>
+          <div style="margin-top:16px">
+            <div class="card-title" style="font-size:14px">Name candidates</div>
+            <div class="alt-list">${candidatesHTML || '<p style="color:var(--muted)">None detected</p>'}</div>
+          </div>
+          ${d.lookup && d.lookup.found ? `
+            <div style="margin-top:20px">
+              <div class="card-title" style="font-size:14px">Database match for "${d.lookup.matched_brand}"</div>
+              ${renderMedicine(d.lookup, true)}
+              <div class="alt-list" style="margin-top:12px">
+                ${renderAlternatives(d.lookup.alternatives)}
+              </div>
+            </div>` : ''}
+          ${warningBox('Verify the extracted name matches your medicine before taking any action.')}
+        </div>
+      </div>`;
+  } catch(e) {
+    showError('ocr-result', e.message);
+  }
+}
+
+// ── VOICE ──────────────────────────────────────────────────────
+let recognition = null;
+let isRecording = false;
+
+function initSpeech() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    document.getElementById('transcript-box').textContent = 'Speech recognition not supported in this browser. Try Chrome.';
+    document.getElementById('voice-btn').disabled = true;
+    return;
+  }
+  recognition = new SpeechRec();
+  recognition.lang = 'en-IN';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onresult = e => {
+    const t = Array.from(e.results).map(r => r[0].transcript).join('');
+    const box = document.getElementById('transcript-box');
+    box.textContent = t;
+    box.classList.add('has-text');
+    document.getElementById('voice-submit').disabled = false;
+  };
+  recognition.onend = () => stopVoice();
+  recognition.onerror = e => {
+    stopVoice();
+    document.getElementById('transcript-box').textContent = 'Error: ' + e.error;
+  };
+}
+
+function toggleVoice() {
+  if (!recognition) initSpeech();
+  if (isRecording) {
+    recognition.stop();
+  } else {
+    recognition.start();
+    isRecording = true;
+    const btn = document.getElementById('voice-btn');
+    btn.textContent = '⏹ Stop Recording';
+    btn.classList.add('recording');
+    document.getElementById('transcript-box').textContent = 'Listening...';
+    document.getElementById('transcript-box').classList.remove('has-text');
+  }
+}
+
+function stopVoice() {
+  isRecording = false;
+  const btn = document.getElementById('voice-btn');
+  btn.textContent = '🎙️ Start Recording';
+  btn.classList.remove('recording');
+}
+
+function clearVoice() {
+  stopVoice();
+  if (recognition) recognition.abort();
+  document.getElementById('transcript-box').textContent = 'Press the button and speak...';
+  document.getElementById('transcript-box').classList.remove('has-text');
+  document.getElementById('voice-submit').disabled = true;
+  document.getElementById('voice-result').innerHTML = '';
+}
+
+async function doVoice() {
+  const transcript = document.getElementById('transcript-box').textContent.trim();
+  if (!transcript || transcript === 'Press the button and speak...') return;
+  loading('voice-result');
+  try {
+    const d = await post('voice', {transcript});
+    const intentLabel = {lookup:'Medicine Lookup', compare:'Comparison', disease:'Disease Search'};
+    let resultHTML = '';
+
+    if (d.intent === 'lookup') {
+      resultHTML = renderMedicine(d.result, true) +
+        '<div class="alt-list" style="margin-top:12px">' + renderAlternatives(d.result.alternatives) + '</div>';
+    } else if (d.intent === 'compare') {
+      const vEmoji = {identical:'✅', partial:'⚠️', similar:'🔶', different:'❌'};
+      resultHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          ${renderMedicine(d.result.med1)}${renderMedicine(d.result.med2)}
+        </div>
+        <div class="verdict ${d.result.verdict}">
+          ${vEmoji[d.result.verdict]||''} ${d.result.verdict_text}
+        </div>`;
+    } else if (d.intent === 'disease') {
+      resultHTML = d.result.medicines_by_salt.map(g => `
+        <div class="disease-salt-group">
+          <div class="disease-salt-title">💊 ${g.salt}</div>
+          <div class="alt-list">${g.medicines.slice(0,3).map(m=>`
+            <div class="alt-item">
+              <div><div class="alt-brand">${m.brand}</div>
+              <div class="alt-mfr">${m.manufacturer}</div></div>
+              ${priceTag(m.price)}
+            </div>`).join('')}</div>
+        </div>`).join('');
+    }
+
+    document.getElementById('voice-result').innerHTML = `
+      <div class="result-box">
+        <div class="card">
+          <div class="card-title">
+            ${intentLabel[d.intent]||'Result'}
+            <span class="tier-badge tier-1" style="margin-left:8px">${d.intent}</span>
+          </div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px">
+            Query: <em>"${transcript}"</em>
+          </div>
+          ${resultHTML}
+          ${warningBox('Always consult a licensed pharmacist or doctor before taking any medicine.')}
+        </div>
+      </div>`;
+  } catch(e) {
+    showError('voice-result', e.message);
+  }
+}
+</script>
+</body>
+</html>
